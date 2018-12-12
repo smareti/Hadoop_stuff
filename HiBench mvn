@@ -1,0 +1,9 @@
+How to install mvn on mac?
+curl https://www-us.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz -o apache-maven-3.6.0-bin.tar.gz
+tar -xvf apache-maven-3.6.0-bin.tar.gz
+
+How to build Hibench benchmarking?
+Download Intel Hibench package from git.
+cd HiBench-master
+../apache-maven-3.6.0/bin/mvn -X -Dspark=2.1 -Dscala=2.11 clean package
+once it is succeded, then go and check HiBench-master/autogen/ directory whether target folder is created with jars.
