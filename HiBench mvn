@@ -7,3 +7,5 @@ Download Intel Hibench package from git.
 cd HiBench-master
 ../apache-maven-3.6.0/bin/mvn -X -Dspark=2.1 -Dscala=2.11 clean package
 once it is succeded, then go and check HiBench-master/autogen/ directory whether target folder is created with jars.
+
+
