@@ -1,0 +1,8 @@
+1. How to run jupyter notebook using pyspark?
+Please set below parameters in your .bashrc file
+
+export PYSPARK_DRIVER_PYTHON=/usr/anaconda2/bin/jupyter
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+export PYSPARK_PYTHON=/usr/anaconda2/bin/python
+#export SPARK_MAJOR_VERSION=2
+export PYSPARK_SUBMIT_ARGS="--packages com.databricks:spark-csv_2.10:1.0.3 --master yarn-client"
