@@ -10,6 +10,8 @@ once it is succeded, then go and check HiBench-master/autogen/ directory whether
 
 How to push local repository to github?
 create new repository in github and follow below steps.
+cd HiBench
+ls -a
 git init
 git add *
 git commit -m "first commit"
@@ -17,4 +19,5 @@ git remote add origin https://github.com/smareti/HiBench.git
 git status
 git push -u origin master
 
-
+How to clean git init in local?
+rm -rf .git
