@@ -8,4 +8,13 @@ cd HiBench-master
 ../apache-maven-3.6.0/bin/mvn -X -Dspark=2.2 -Dscala=2.11 clean package
 once it is succeded, then go and check HiBench-master/autogen/ directory whether target folder is created with jars.
 
+How to push local repository to github?
+create new repository in github and follow below steps.
+git init
+git add *
+git commit -m "first commit"
+git remote add origin https://github.com/smareti/HiBench.git
+git status
+git push -u origin master
+
 
