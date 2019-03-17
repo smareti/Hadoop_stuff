@@ -1,0 +1,112 @@
+Honore, Frantz (Contractor) <Frantz.Honore@CVSHealth.com>
+Required tools:
+
+Putty -- installed
+Winscp -- installed
+Ultra edit -- Installed
+teradata sql assistant -- installed
+webex -- installed
+7 zip  -- installed
+Hive ODBC driver
+
+teamtrack
+HPSM portal
+
+Insight IQ
+administrator/Rich22hi!
+
+https://mypassword.cvs.com/AIMS/PS/Default.aspx
+
+https://cvs.webex.com/join/Mohit.Bansal2CVSHealth.com 
+Mohit wbex: z231592/Welcome#123
+
+sudo du -ha /var/log/| sort -rh | head -15
+
+Retail Prod: Corp.cvs.com 
+PBM Prod: Corp.cvscaremark.com 
+All dev and uat, PBM and Retail: test.cvscaremark.com  
+
+For Retail Ambari access, you need to be added to the AD group and also added to the security group "hdpsupp".
+AD password: Sm0808#@
+
+RTL PROD - Venkat Ravi
+c060337/S@mmer@70 / Gue$$me@1
+
+sudo su - bigsql --> db2 connect to bigsql
+DSM RTL PROD webUI --> bigsql/CV$H@d00p@123
+
+z253529/Devanshsai@18
+
+http://sharepoint/sites/IT/AnalyticsCOEIT/Shared%20Documents/Forms/AllItems.aspx 
+
+http://sharepoint/sites/myArchitecture/metrics/Hadoop%20Admin%20KTKF/Forms/AllItems.aspx 
+
+https://cvs.webex.com/join/Z247595
+UReq239637
+UReq207750 
+
+sudo view
+:!/bin/bash
+ 	
+Cross Company Certification: CCC-8167042
+ITPR011365
+ITPR025714
+Consultant/Advisor/Sr.Advisor 
+
+klist -kt /etc/security/keytabs/hdfs.headless.keytab
+kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs-DEV_PBM@TEST.CVSCAREMARK.COM
+klist -l
+
+Please create sudo access for my ID (z247595) to batch ID (cvsaetd1). Add into group "CVSAEGRP" on below server.
+
+Host IP Address:   RRI1SFTPPL2V.corp.cvscaremark.com
+IP Address:  [10.18.60.7]
+
+
+beeline -u "jdbc:hive2://rri2hdpepl10p.corp.cvscaremark.com:2181,rri2hdpepl11p.corp.cvscaremark.com:2181,rri2hdpepl12p.corp.cvscaremark.com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http"
+
+for host in `cat hosts`; do echo $host; ssh -q hdpadm@$host 'id cmsadbatch' ; done
+yarn application -movetoqueue application_1535871991734_1848 -queue pa
+
+Two things in islon: map AD/lamin1  to Linux shel id lamin1  and also have user lamin1  added to hdfs proxy
+
+beeline -u "jdbc:hive2://rri2hdpedl2p.corp.cvscaremark.com:10000/default;transportMode=binary;principal=hive/rri2hdpedl2p.corp.cvscaremark.com@CORP.CVS.COM;auth=kerberos;saslQop=auth-conf"
+
+beeline -u "jdbc:hive2://rri2hdpedl1p.corp.cvscaremark.com:10000/default;transportMode=binary;principal=hive/rri2hdpedl1p.corp.cvscaremark.com@CORP.CVS.COM;auth=kerberos;saslQop=auth-conf"
+
+1)	Beeline with Zookeeper URL  ( "jdbc:hive2://rri2hdpepl10p.corp.cvscaremark.com:2181,rri2hdpepl11p.corp.cvscaremark.com:2181,rri2hdpepl12p.corp.cvscaremark.com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http" ) 
+
+2)	Normal connection string (beeline -u "jdbc:hive2://rri2hdpepl2p.corp.cvscaremark.com:10000/default;principal=hive/_HOST@TEST.CVSCAREMARK.COM")
+
+Could you  please execute the following commands in RTL Dev and RTL UAT zone for providing HDFS access to the project group.
+RTL DEV
+chmod -R +a group 2025 allow dir_gen_all,container_inherit,object_inherit  /data/dev/MINCLI
+
+$JAVA_HOME/bin/jmap -histo `cat /var/run/hive/hive-server.pid` > /tmp/histo.txt $JAVA_HOME/bin/jmap -heap `cat /var/run/hive/hive-server.pid` > /tmp/heap.txt 
+$JAVA_HOME/bin/jmap -dump:file=/tmp/hs2.hprof `cat /var/run/hive/hive-server.pid`    (please make sure that /tmp has sufficient space to collect the heap size)
+
+[hdfs@rri2hdpedl2p ~]$ curl -sS -L -w '%{http_code}' -X PUT --negotiate -u : 'http://rtlhdpdev.corp.cvscaremark.com:8082/webhdfs/v1/hdp/apps/2.6.2.0-205/sqoop?op=SETPERMISSION&permission=555'
+
+for host in `cat known_hosts`; do echo $host;  scp /home/hadoop/anaconda2/Anaconda2-4.3.1-Linux-x86_64.sh root@$host:/root; done
+for host in `cat known_hosts`; do echo $host;  ssh -q root@$host 'bash /root/Anaconda2-4.3.1-Linux-x86_64.sh -b -p /home/hadoop/anaconda2'; done
+for host in `cat known_hosts`; do echo $host;  ssh -q root@$host 'rm -f Anaconda2-4.3.1-Linux-x86_64.sh'; done
+
+ps huH p <PID_OF_U_PROCESS> | wc -l 
+
+jdbc:hive2://rri2hdpedl2p.corp.cvscaremark.com:10000/default;principal=hive/rri2hdpedl2p.corp.cvscaremark.com@TEST.CVSCAREMARK.COM?hive.insert.into.multilevel.dirs=true;hive.enforce.bucketing=true;mapreduce.map.memory.mb=12000;mapreduce.map.java.opts=-Xmx9600m;hive.exec.orc.split.strategy=BI;
+
+for host in `cat hosts`; do echo $host;  ssh -q root@$host 'echo -e "Downtown123$\nDowntown123$" | passwd z247595'; done 
+
+Try running this command prior to the query: 
+set hive.tez.container.size=8192;
+This command will double the TEZ container size and may prevent the out of memory exception.
+
+curl -k -u "z247595:Downtown123$" -H "X-Requested-By: ambari" -X GET  https://paz1hendl02p:8080/api/v1/clusters/DEV_PBM/hosts
+
+curl -k -u "z247595:Downtown123$" -H "X-Requested-By: ambari" -X GET https://paz1hendl02p:8080/api/v1/clusters/DEV_PBM/hosts | grep -E host_name |awk -v FS="\"host_name\" :" 'NF>1{print $2}'|sed  's/"//g' |grep -v pbmhdpdev.corp.cvscaremark.com > hosts.txt
+
+keytool - -list - -keystore “keystore_name.jks” - -verbose  
+
+for i in {1..10} ; do /usr/jdk64/jdk1.8.0_40/bin/jstack 12308 > stack_$i; sleep 5s; done
+
+[hdpadm@rri2hdpedl2p ~]$ /usr/bin/ldapsearch -x -W -H ldap://CVSDCPA5V.corp.cvs.com:389 -b "CN=Users,DC=Corp,DC=CVS,DC=com" -D "vi_kadmin_ambari" -s one samaccountname=z247595
