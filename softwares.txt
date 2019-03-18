@@ -103,7 +103,33 @@ list
 exit
 EOF
 
+sparl smaple job
+spark-submit --class org.apache.spark.examples.SparkPi   --master yarn-client  --num-executors 1  --driver-memory 512m --executor-memory 512m  --executor-cores 1  /usr/hdp/2.6.2.0-205/spark2/examples/jars/spark-examples_2.11-2.1.1.2.6.2.0-205.jar 10
 
-
+spark = SparkSession \
+    .builder \
+    .appName("z246390_med_d_parquet_2018_10-02") \
+    .config("spark.executor.memory","16GB") \
+-	    .config("hive.exec.orc.split.strategy","BI")\        <- or I have tried the other one (.config(“spark.driver.memory”,”8g”) ), didn’t work on helping saving files
+    .config("spark.dynamicAllocation.enabled","true") \
+    .config("spark.executor.cores","8")\
+    .config("spark.shuffle.service.enabled", "true")\
+    .config("spark.dynamicAllocation.initialExecutors","10")\
+    .config("spark.yarn.executor.memoryOverhead","4096")\
+    .config("spark.yarn.queue", "monitoring") \                                                   Change Queue Name
+    .config("spark.master","yarn") \
+    .config("spark.submit.deployMode","client")\
+    .config("spark.dynamicAllocation.executorIdleTimeout","90s")\
+    .config("spark.sql.orc.filterPushdown","true") \
+    .enableHiveSupport()\
+    .getOrCreate()
+    
+    
+    oracle connection string
+    “connection_string": "jdbc:oracle:thin:@(DESCRIPTION = (ENABLE=BROKEN)(SDU=8192)(ADDRESS = (PROTOCOL = TCPS)(Host = hostname)(Port = 2484)) (CONNECT_DATA = (SID = HSID)))"
+    
+    curl -v -u admin:Alph@420 -H "Content-Type: application/json" -H "X-Requested-By:ambari"  -X GET "https://hostnamep:8080/api/v1/views/CAPACITY-SCHEDULER/versions/1.0.0/instances/AUTO_CS_INSTANCE/resources/scheduler" -k
+    
+    
 
 
