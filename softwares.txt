@@ -109,5 +109,5 @@ spark = SparkSession \
     > explain select  .................
     
     
-
+#ldapsearch -x -W -H ldap://hostname.test.domain.com:389 -b "OU= RTL_UAT,OU=HadoopDev,DC=test,DC=domain,DC=com" -D "TEST\kadmin_ambari" -s one
 
