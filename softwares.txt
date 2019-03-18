@@ -1,64 +1,28 @@
-
-Required tools:
-
-Putty -- installed
-Winscp -- installed
-Ultra edit -- Installed
-teradata sql assistant -- installed
-webex -- installed
-7 zip  -- installed
-Hive ODBC driver
-
-teamtrack
-HPSM portal
-
-Insight IQ
-administrator/Rich22hi!
-
-Mohit wbex: z231592/Welcome#123
-
 sudo du -ha /var/log/| sort -rh | head -15
-
-Retail Prod: Corp.cvs.com 
-PBM Prod: Corp.cvscaremark.com 
-All dev and uat, PBM and Retail: test.cvscaremark.com  
-
-For Retail Ambari access, you need to be added to the AD group and also added to the security group "hdpsupp".
-
-
 
 sudo view
 :!/bin/bash
- 	
-Cross Company Certification: CCC-8167042
-ITPR011365
-ITPR025714
-Consultant/Advisor/Sr.Advisor 
+ 
 
 klist -kt /etc/security/keytabs/hdfs.headless.keytab
-kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs-DEV_PBM@TEST.CVSCAREMARK.COM
+kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs-DEV_PBM@TEST..COM
 klist -l
 
-Please create sudo access for my ID (z247595) to batch ID (cvsaetd1). Add into group "CVSAEGRP" on below server.
 
-Host IP Address:   RRI1SFTPPL2V.corp.cvscaremark.com
-IP Address:  [10.18.60.7]
-
-
-beeline -u "jdbc:hive2://hostname.corp.cvscaremark.com:2181,rri2hdpepl11p.corp.cvscaremark.com:2181,rri2hdpepl12p.corp.cvscaremark.com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http"
+beeline -u "jdbc:hive2://hostname...com:2181,...com:2181,...com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http"
 
 for host in `cat hosts`; do echo $host; ssh -q hdpadm@$host 'id cmsadbatch' ; done
 yarn application -movetoqueue application_1535871991734_1848 -queue pa
 
 Two things in islon: map AD/lamin1  to Linux shel id lamin1  and also have user lamin1  added to hdfs proxy
 
-beeline -u "jdbc:hive2://hostname.corp.cvscaremark.com:10000/default;transportMode=binary;principal=hive/rri2hdpedl2p.corp.cvscaremark.com@CORP.CVS.COM;auth=kerberos;saslQop=auth-conf"
+beeline -u "jdbc:hive2://hostname...com:10000/default;transportMode=binary;principal=hive/...com@..COM;auth=kerberos;saslQop=auth-conf"
 
-beeline -u "jdbc:hive2://hostanme.corp..com:10000/default;transportMode=binary;principal=hive/rri2hdpedl1p.corp..com@CORP..COM;auth=kerberos;saslQop=auth-conf"
+beeline -u "jdbc:hive2://hostanme...com:10000/default;transportMode=binary;principal=hive/...com@..COM;auth=kerberos;saslQop=auth-conf"
 
-1)	Beeline with Zookeeper URL  ( "jdbc:hive2://hostname.corp..com:2181,rri2hdpepl11p.corp..com:2181,rri2hdpepl12p.corp..com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http" ) 
+1)	Beeline with Zookeeper URL  ( "jdbc:hive2://hostname...com:2181,...com:2181,...com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2-http" ) 
 
-2)	Normal connection string (beeline -u "jdbc:hive2://hostname.corp..com:10000/default;principal=hive/_HOST@TEST..COM")
+2)	Normal connection string (beeline -u "jdbc:hive2://hostname...com:10000/default;principal=hive/_HOST@TEST..COM")
 
 Could you  please execute the following commands in RTL Dev and RTL UAT zone for providing HDFS access to the project group.
 RTL DEV
@@ -67,7 +31,7 @@ chmod -R +a group 2025 allow dir_gen_all,container_inherit,object_inherit  /data
 $JAVA_HOME/bin/jmap -histo `cat /var/run/hive/hive-server.pid` > /tmp/histo.txt $JAVA_HOME/bin/jmap -heap `cat /var/run/hive/hive-server.pid` > /tmp/heap.txt 
 $JAVA_HOME/bin/jmap -dump:file=/tmp/hs2.hprof `cat /var/run/hive/hive-server.pid`    (please make sure that /tmp has sufficient space to collect the heap size)
 
-[hdfs@hostname ~]$ curl -sS -L -w '%{http_code}' -X PUT --negotiate -u : 'http://hostanem,e.corp..com:8082/webhdfs/v1/hdp/apps/2.6.2.0-205/sqoop?op=SETPERMISSION&permission=555'
+[hdfs@hostname ~]$ curl -sS -L -w '%{http_code}' -X PUT --negotiate -u : 'http://hostanem,e...com:8082/webhdfs/v1/hdp/apps/2.6.2.0-205/sqoop?op=SETPERMISSION&permission=555'
 
 for host in `cat known_hosts`; do echo $host;  scp /home/hadoop/anaconda2/Anaconda2-4.3.1-Linux-x86_64.sh root@$host:/root; done
 for host in `cat known_hosts`; do echo $host;  ssh -q root@$host 'bash /root/Anaconda2-4.3.1-Linux-x86_64.sh -b -p /home/hadoop/anaconda2'; done
@@ -75,7 +39,7 @@ for host in `cat known_hosts`; do echo $host;  ssh -q root@$host 'rm -f Anaconda
 
 ps huH p <PID_OF_U_PROCESS> | wc -l 
 
-jdbc:hive2://hostname.corp..com:10000/default;principal=hive/rri2hdpedl2p.corp..com@TEST..COM?hive.insert.into.multilevel.dirs=true;hive.enforce.bucketing=true;mapreduce.map.memory.mb=12000;mapreduce.map.java.opts=-Xmx9600m;hive.exec.orc.split.strategy=BI;
+jdbc:hive2://hostname...com:10000/default;principal=hive/...com@TEST..COM?hive.insert.into.multilevel.dirs=true;hive.enforce.bucketing=true;mapreduce.map.memory.mb=12000;mapreduce.map.java.opts=-Xmx9600m;hive.exec.orc.split.strategy=BI;
 
 for host in `cat hosts`; do echo $host;  ssh -q root@$host 'echo -e "Downtown123$\nDowntown123$" | passwd z247595'; done 
 
@@ -85,18 +49,18 @@ This command will double the TEZ container size and may prevent the out of memor
 
 curl -k -u "z247595:Downtown123$" -H "X-Requested-By: ambari" -X GET  https://hostname:8080/api/v1/clusters/DEV_PBM/hosts
 
-curl -k -u "z247595:Downtown123$" -H "X-Requested-By: ambari" -X GET https://hostname:8080/api/v1/clusters/DEV_PBM/hosts | grep -E host_name |awk -v FS="\"host_name\" :" 'NF>1{print $2}'|sed  's/"//g' |grep -v hostname.corp..com > hosts.txt
+curl -k -u "z247595:Downtown123$" -H "X-Requested-By: ambari" -X GET https://hostname:8080/api/v1/clusters/DEV_PBM/hosts | grep -E host_name |awk -v FS="\"host_name\" :" 'NF>1{print $2}'|sed  's/"//g' |grep -v hostname...com > hosts.txt
 
 keytool - -list - -keystore “keystore_name.jks” - -verbose  
 
 for i in {1..10} ; do /usr/jdk64/jdk1.8.0_40/bin/jstack 12308 > stack_$i; sleep 5s; done
 
-[hdpadm@hostname ~]$ /usr/bin/ldapsearch -x -W -H ldap://.corp..com:389 -b "CN=Users,DC=Corp,DC=,DC=com" -D "vi_kadmin_ambari" -s one samaccountname=z247595
+[hdpadm@hostname ~]$ /usr/bin/ldapsearch -x -W -H ldap://...com:389 -b "CN=Users,DC=,DC=,DC=com" -D "vi_kadmin_ambari" -s one samaccountname=z247595
 
 keytab command
 ------------
 ktutil <<EOF
-add_entry -password -p unravel/hostname@CORP.COM -k 1 -e arcfour-hmac
+add_entry -password -p unravel/hostname@.COM -k 1 -e arcfour-hmac
 hadoopRocks123!
 write_kt /etc/security/keytabs/unravel.keytab
 list
