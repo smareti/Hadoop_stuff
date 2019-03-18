@@ -1,0 +1,31 @@
+	Hadoop Advisory								
+ 									
+									
+									
+The following computer system advisory impacts users of Hadoop in the 									
+									
+DATE & TIME:	<Day> <DD/MM/YYYY> <hh:mm> <AM/PM> - <Day> <DD/MM/YYYY> <hh:mm> <AM/PM> CST								
+									
+Alert Status:	<INFORMATION / ACTION REQUIRED>								
+									
+Audience:	Hadoop <Environment> Cluster Users 								
+									
+Author:	<Sender Name>								
+									
+Subject:	Hadoop  <Environment> Cluster unavailable for <How Many> hours								
+									
+High Level Summary:	<One line that explains the purpose of the change>								
+									
+Technical Summary:	<Detailed itemized list of changes. Should represent all CRs included in the deployment>								
+									
+Environment Affected:	Hadoop  <Environment> Cluster								
+									
+									
+Business Impact:	<What will be inaccessible during this period>								
+									
+									
+Action Required:	Stop / suspend all process and workflows running on the <Environment> cluster before the outage window. You can resume all your workflows once a completion email is sent out.								
+									
+Issues	Send an e-mail to hadoopadmin@domain.com with your observartions								
+									
+Notification:	An email will be sent 4 hour before the outage, the next email will be sent when the outage starts followed by an email once the changes have been successfully applied and outage is complete.								
