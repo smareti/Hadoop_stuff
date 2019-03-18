@@ -1,0 +1,172 @@
+Unix Onboarding for Enterprise Analytics Employees in the Pharmacy Benefits Management (PBM) and Retail (RTL) Businesses
+This document is intended to help new UNIX users familiarize themselves with the resources available within the  Unix and Hadoop systems. It assumes some basic familiarity with the UNIX command line.
+
+Mohit Bansal, Neelakantappa Kawad, Stephen Klosterman
+Table of Contents
+1.	Create a location for Anaconda environments and packages
+2.	Edit your .bashrc file
+3.	Get started with Anaconda
+4.	Registering Multiple Python Kernels
+5.	Shared space for data storage
+6.	Hive (TBD)
+1.	Create a location for Anaconda environments and packages
+Before we begin, we have to create three symlinks. A symlink is a link from one location to another in the Linux file system. Since hard drive space in your /home/user directory is limited, you will link to another location where you have more space. This will allow you to create Anaconda environments and install packages. For more information on links, see https://www.linux.com/learn/intro-to-linux/2017/6/understanding-linux-links.
+
+The first step is to create yourself a directory to symlink to. You should have write permissions to ‘entAnalytics’ wherever it resides the PBM or RTL server (see file paths below). Navigate to /entAnalytics, then 
+
+mkdir <user_name>
+
+Now you are ready to create the symlinks. Navigate back to your /home/user directory and execute the following:
+
+
+For RTL Unix Servers:
+ln -s /opt/prod/common/entAnalytics/<user_name>/.cache .cache
+ln -s /opt/prod/common/entAnalytics/<user_name>/.conda .conda
+ln -s /opt/prod/common/entAnalytics/<user_name>/.local .local
+
+ 
+
+2.	Edit your .bashrc file
+Append the following to the .bashrc (an invisible file in your /home/user directory).
+
+PBM
+Export PATH=$PATH:/usr/anaconda2/bin
+export HADOOP_CONF_DIR=/usr/hdp/current/hadoop-client/conf/
+export ANACONDA_ROOT="/usr/anaconda2/"
+export PYSPARK_PYTHON=$ANACONDA_ROOT/bin/python
+export SPARK_HOME="/usr/hdp/current/spark2-client/"
+export PYLIB="$SPARK_HOME/python/lib, 
+$SPARK_HOME/python/lib/py4j-0.9-src.zip, $SPARK_HOME/python/lib/pyspark.zip"
+export PYSPARK_PYTHON=$ANACONDA_ROOT/bin/python
+export PYSPARK_DRIVER_PYTHON=jupyter
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+
+RTL
+Export PATH="/home/hadoop/anaconda2/bin/:$PATH"
+export HADOOP_CONF_DIR=/usr/hdp/current/hadoop-client/conf/
+export ANACONDA_ROOT="/home/hadoop/anaconda2/"
+export PYSPARK_PYTHON=$ANACONDA_ROOT/bin/python
+export SPARK_HOME="/usr/hdp/current/spark2-client/"
+export PYLIB="$SPARK_HOME/python/lib, 
+$SPARK_HOME/python/lib/py4j-0.9-src.zip, $SPARK_HOME/python/lib/pyspark.zip"
+export PYSPARK_PYTHON=$ANACONDA_ROOT/bin/python
+export PYSPARK_DRIVER_PYTHON=jupyter
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+
+Bashrc is sourced every time user ssh to server, please don’t forget to execute “source .bashrc” if don’t want to logout and log back in.
+
+ 
+
+After you resource .bashrc, anaconda libraries are in your path. You can verify it using “echo $PATH” and output should have “/usr/anaconda2/bin” directory in path.
+3.	Get started with Anaconda
+Try executing command “conda”. When run without any argument specified, it will prints all the options available for users.
+ 
+You can launch a jupyter notebook using the default conda installation that is available to all users. Or, to have additional kernels (e.g. R, as is shown below) and install new packages, you can create an environment. For more information, see here: https://conda.io/docs/user-guide/tasks/manage-environments.html
+
+Create a conda environment using “conda create –n env1”
+ 
+To activate conda environment run the following
+
+Source activate env1
+ 
+To list conda environments use “conda env list”
+ 
+To install a package in Python either you can use conda or pip. Use “conda install pip” to install pip. Conda will collect all the packages details which include dependent packages as well and install it.
+
+Installing Jupyter
+Jupyter is by default comes prepackaged with Ananconda but if you would like to install it in your environment, you can use either of following commands:
+
+conda install jupyter
+pip install jupyter
+ 
+To test jupyter, simply type “jupyter notebook”, jupyter notebook will start with default configuration and bind to 8888 port on localhost.
+
+ 
+If you would like to customize jupyter, such as bind it to IP address or running on a different port use the step outlined below:-
+
+First step is to generate config jupyter is using by default –
+jupyter notebook --generate-config 
+Output of this command will be by default stored in “.jupyter” in user home directory and in file named “jupyter_notebook_onfig.py”
+ 
+Next step is to modify the config file. Open the file in Edit mode and search for c.NotebookApp.port”. 
+
+Change it to the port of your choice and uncomment it.
+
+Change port Number to 8889 or to any other port for that matter.
+ 
+In order to access from browser, it is recommended to update the IP to an actual IP address instead of localhost. Identify the server IP address using “ifconfig –a” command.
+
+You might see multiple IP address but you have to use the IP address assigned to eth1.
+ 
+
+Now locate “c.NotebookApp.ip” in “jupyter_notebook_onfig.py” and change the localhost to IP address. 
+
+Uncomment the entry before saving the file.
+
+ 
+Run the jupyter notebook-
+ 
+
+ 
+Note – Make sure to provide the port number you are planning to configure to run Jupyter Notebooks to Hadoop admins so that they can work with UNIX admins to add the port number in iptable exclusion list. (probably not necessary).
+
+4.	Registering Multiple Python Kernels
+
+The idea here is to install multiple ipython kernels. Here are instructions for anaconda. If you are not using anaconda, I recently added instructions using pure virtualenvs.
+Anaconda 4.1.0
+Since version 4.1.0, anaconda includes a special package nb_conda_kernels that detects conda environments with notebook kernels and automatically registers them. This makes using a new python version as easy as creating new conda environments:
+conda create -n py27 python=2.7 ipykernel
+conda create -n py36 python=3.6 ipykernel
+After a restart of jupyter notebook, the new kernels are available over the graphical interface. Please note that new packages have to be explicitly installed into the new enviroments. TheManaging environments section in conda's docs provides further information.
+Manually registering kernels
+Users who do not want to use nb_conda_kernels or still use older versions of anaconda can use the following steps to manually register ipython kernels.
+configure the python2.7 environment:
+conda create -n py27 python=2.7
+source activate py27
+conda install notebook ipykernel
+ipython kernel install --user
+configure the python3.6 environment:
+conda create -n py36 python=3.6
+source activate py36
+conda install notebook ipykernel
+ipython kernel install --user
+After that you should be able to choose between python2
+and python3 when creating a new notebook in the interface.
+Additionally you can pass the --name and --display-name options to ipython kernel install if you want to change the names of your kernels. See ipython kernel install --help for more information.
+
+Installing R Kernel-
+
+The easiest way to do it switching to your environment and executing the following command:-
+
+conda create -n my-r-env -c r r-essentials
+
+After the install is complete, start your jupyter notebook.
+
+ 
+
+Open the notebook in browser and you can see the list of available kernels in New Drop down menu on upper right hand side corner.
+
+ 
+
+Click on R. It will open a new page which is new notebook running on top of Python kernel R.
+
+ 
+
+5.	Shared space for data storage
+
+HDFS (Sandbox) Structure – 
+
+Enterprise Analytics team will be grouped under a parent folder called “ENT_ANALYTICS” in the sandbox directory. It is actually an HDFS location which will also be available as NFS drive (i.e. you can access it through the Linux file system).  The type of protocol to use to access the data is fully left at user’s discretion. Each user will have a separate workspace /directories to store/ manipulate the data. User will have full privilege to manage and control access on their workspace. User will also be provided with an common space to share their data with their team members/business users.
+
+Both RTL and PBM: create a directory within this location for your data:
+
+/opt/hdfs_fs/hadoop/data/prod/sandbox/ENT_ANALYTICS/
+
+
+6.	Hive Schema (under construction)
+Just like directories, each user will be assigned his own hive schema /database with full privileges on it along with a common and shared schema / database with read, write to access to publish their data with rest of the group.
+
+entanalytics_steve
+entanalytics_ali
+entanalytics_karin
+entanalytics_shaheen
