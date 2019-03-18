@@ -130,6 +130,20 @@ spark = SparkSession \
     
     curl -v -u admin:Alph@420 -H "Content-Type: application/json" -H "X-Requested-By:ambari"  -X GET "https://hostnamep:8080/api/v1/views/CAPACITY-SCHEDULER/versions/1.0.0/instances/AUTO_CS_INSTANCE/resources/scheduler" -k
     
+    > set hive.tez.container.size=8192;
+    > set hive.execution.engine=tez;
+    > set hive.vectorized.execution.enabled=true;
+    > set hive.vectorized.execution.reduce.enabled=true;
+    > set hive.tez.java.opts=-Xmx6553.6m;
+    > set tez.runtime.io.sort.mb=3276.8;
+    > set tez.runtime.unordered.output.buffer.size-mb=819.2;
+    > set hive.tez.container.size=16384;
+    > set hive.tez.java.opts=-Xmx14336m;
+    > set tez.runtime.io.sort.mb=4750;
+    > set tez.runtime.unordered.output.buffer.size-mb=1638.4;
+    > set hive.fetch.task.conversion=none;
+    > explain select  .................
+    
     
 
 
