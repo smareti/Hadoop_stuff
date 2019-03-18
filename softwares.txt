@@ -92,3 +92,18 @@ keytool - -list - -keystore “keystore_name.jks” - -verbose
 for i in {1..10} ; do /usr/jdk64/jdk1.8.0_40/bin/jstack 12308 > stack_$i; sleep 5s; done
 
 [hdpadm@hostname ~]$ /usr/bin/ldapsearch -x -W -H ldap://.corp..com:389 -b "CN=Users,DC=Corp,DC=,DC=com" -D "vi_kadmin_ambari" -s one samaccountname=z247595
+
+keytab command
+------------
+ktutil <<EOF
+add_entry -password -p unravel/hostname@CORP.COM -k 1 -e arcfour-hmac
+hadoopRocks123!
+write_kt /etc/security/keytabs/unravel.keytab
+list
+exit
+EOF
+
+
+
+
+
