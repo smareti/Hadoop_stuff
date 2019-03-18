@@ -13,11 +13,11 @@ spark-sql --queue default --master yarn --conf "spark.dynamicAllocation.enabled=
 
 sample hive query:
 
-jdbc:hive2://hostname.corp..com:2181,hostname.corp..com:2181,paz1hmndl02p.corp..com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
+jdbc:hive2://hostname...com:2181,hostname...com:2181,...com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
 
-beeline -u "jdbc:hive2://hostname.corp..com:10000/tpcds_bin_partitioned_orc_100;principal=hive/_HOST@CORP.CVS.COM?tez.queue.name=default" -f ${query}.sql >./out/${query}.out
+beeline -u "jdbc:hive2://hostname...com:10000/tpcds_bin_partitioned_orc_100;principal=hive/_HOST@..COM?tez.queue.name=default" -f ${query}.sql >./out/${query}.out
 
-beeline -u "jdbc:hive2://hostname.corp.cvscaremark.com:2181,hostname.corp..com:2181,hostname.corp..com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" --hiveconf unravel.workflow.name="Hive_query19"   --hiveconf unravel.workflow.utctimestamp=$(date -u '+%Y%m%dT%H%M%SZ')  -f /tmp/temp/hive/hive-testbench/sample-queries-tpcds/hive_sample_job.sql > /tmp/temp/hive/hive-testbench/sample-queries-tpcds/out/hive_sample_job.sql.log
+beeline -u "jdbc:hive2://hostname.orp..com:2181,hostname...com:2181,hostname...com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2" --hiveconf unravel.workflow.name="Hive_query19"   --hiveconf unravel.workflow.utctimestamp=$(date -u '+%Y%m%dT%H%M%SZ')  -f /tmp/temp/hive/hive-testbench/sample-queries-tpcds/hive_sample_job.sql > /tmp/temp/hive/hive-testbench/sample-queries-tpcds/out/hive_sample_job.sql.log
 
 
 pyspark sql:
@@ -137,12 +137,12 @@ export PATH="/usr/jdk64/jdk1.8.0_40/bin/:$PATH"
 ./tpcds-build.sh
 
 vi tpcds-setup.sh
-HIVE='beeline -u "jdbc:hive2://hostname.corp..com:10000/default;principal=hive/_HOST@CORP.CVS.COM?tez.queue.name=default" --hiveconf hive.exec.dynamic.partition.mode=nonstrict --hiveconf hive.exec.max.dynamic.partitions.pernode=100000 --hiveconf hive.exec.max.dynamic.partitions=100000 --hiveconf hive.exec.max.created.files=1000000 --hiveconf hive.exec.parallel=true --hiveconf hive.stats.autogather=false --hiveconf hive.optimize.sort.dynamic.partition=true --hiveconf hive.optimize.sort.dynamic.partition=true --hiveconf tez.runtime.empty.partitions.info-via-events.enabled=true --hiveconf hive.tez.auto.reducer.parallelism=true --hiveconf hive.tez.min.partition.factor=0.01'
+HIVE='beeline -u "jdbc:hive2://hostname.corp..com:10000/default;principal=hive/_HOST@CORP..COM?tez.queue.name=default" --hiveconf hive.exec.dynamic.partition.mode=nonstrict --hiveconf hive.exec.max.dynamic.partitions.pernode=100000 --hiveconf hive.exec.max.dynamic.partitions=100000 --hiveconf hive.exec.max.created.files=1000000 --hiveconf hive.exec.parallel=true --hiveconf hive.stats.autogather=false --hiveconf hive.optimize.sort.dynamic.partition=true --hiveconf hive.optimize.sort.dynamic.partition=true --hiveconf tez.runtime.empty.partitions.info-via-events.enabled=true --hiveconf hive.tez.auto.reducer.parallelism=true --hiveconf hive.tez.min.partition.factor=0.01'
 
 runcommand "$HIVE  -f ddl-tpcds/text/alltables.sql --hivevar DB=tpcds_text_${SCALE} --hivevar LOCATION=${DIR}/${SCALE}"
 ./tpcds-setup.sh 2 (2 GB)
 cd sample-queries-tpcds
-vi run_all_cvs_queries.sh
+vi run_all__queries.sh
 for i in 19 42 52 55 63 68 73 98 3 7 27 43 53 89 34 46 59 79 96 48
 do
  query=query${i}
