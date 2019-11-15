@@ -1,0 +1,246 @@
+# Script to run Oozie workflows
+
+echo "
+Welcome to...
+    ******************
+    ******************
+    **** OOZIE CLI *****
+    ******************
+    ******************
+"
+
+
+log_trace () {
+    echo "$(date) [TRACE] : $@" >&2
+}
+
+
+log_debug () {
+    echo "$(date) [DEBUG] : $@" >&2
+}
+
+
+log_info () {
+    echo "$(date) [INFO]  : $@" >&2
+}
+
+
+log_warn () {
+    echo "$(date) [WARN]  : $@" >&2
+}
+
+
+log_error () {
+    echo "$(date) [ERROR] : $@" >&2
+}
+
+
+log_fatal () {
+    echo "$(date) [FATAL] : $@" >&2
+}
+
+
+set_default_configs() {
+  # Setting default values
+  echo "Setting default configs"
+
+
+  ENV=$1
+
+
+  if [[ `hostname -s` = hostname* ]] || [[ ${ENV} = "dev" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"ABC.COM"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://oozie.server:25007/oozie"}"
+        HUE="${HUE:-"https://hue.server/oozie/list_oozie_workflow"}"
+
+
+  elif [[ `hostname -s` = hostname* ]] || [[ ${ENV} = "uat" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"ABC.COM"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://oozie.server:25007/oozie"}"
+        HUE="${HUE:-"https://hue.server/oozie/list_oozie_workflow"}"
+
+
+  elif [[ `hostname -s` = hostname* ]] || [[ ${ENV} = "prod" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"prod.com"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://oozie.server:25007/oozie"}"
+        HUE="${HUE:-"https://hue.server/oozie/list_oozie_workflow"}"
+
+
+  elif [[ ${ENV} = "hostname" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"abc.com"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://hostname.abc.com:11000/oozie"}"
+        HUE="${HUE:-"https://hostname.abc.com:8888/oozie/list_oozie_workflow"}"
+
+
+  elif [[ ${ENV} = "hostname" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"dca.com"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://hostname.abc.com:11000/oozie"}"
+        HUE="${HUE:-"https://hostname.abc.com:8888/oozie/list_oozie_workflow"}"
+
+
+  elif [[ ${ENV} = "asiasil" ]]; then
+        PRINCIPAL="${PRINCIPAL:-"myuser"}"
+        DOMAIN="${DOMAIN:-"dgc.com"}"
+        KEYTAB="${KEYTAB:-"~/myuser.keytab"}"
+        OOZIE="${OOZIE:-"http://hostname:11000/oozie"}"
+        HUE="${HUE:-"https://hostname:8889/oozie/list_oozie_workflows/"}"
+  fi
+}
+
+
+kinit_oozie() {
+
+
+    kinit -S krbtgt/${DOMAIN}@${DOMAIN} ${PRINCIPAL}@${DOMAIN} -k -t ${KEYTAB}
+
+
+    if [ $? -ne 0 ]; then
+        log_error "Kinit as ${PRINCIPAL}@${DOMAIN} failed"
+        exit 1
+    else
+        log_info "Kinited as ${PRINCIPAL}@${DOMAIN}"
+    fi
+}
+
+
+klist_status() {
+    klist_status=$(klist)
+    exitCode=$?
+    log_info "klist_status - klist output: ${klist_status}"
+    echo $exitCode
+}
+
+
+oozie_setup() {
+    # run the Oozie workflow
+    CONFIG="${CONFIG:-"/opt/app/workflows/${1}_props_job.xml"}"
+    echo "Running ${CONFIG}"
+}
+
+
+run_oozie_job() {
+
+
+    OOZIE_OUTPUT=$(curl -X POST --header "Content-Type:application/xml" --negotiate -u foo:bar  -d @${CONFIG} ${OOZIE}/v2/jobs?action=start)
+
+
+    # output when a job starts is "ID:00001000001000"
+    if echo ${OOZIE_OUTPUT} | grep "oozie-oozi-W"; then
+      log_info "Workflow has started as job ID ${OOZIE_OUTPUT}"
+      JOBID=`echo -e ${OOZIE_OUTPUT} | awk -F ':' '{print $2}' | tr -d } | sed -e 's/^"//' -e 's/"$//'`;
+      log_info "Please go here to check job in HUE ${HUE}/${JOBID}"
+    else
+      log_fatal "The job has not started correctly. ${OOZIE_OUTPUT}"
+      exit 1
+    fi
+}
+
+
+poll_every_5() {
+    ALL_OOZIE_STATUS=("SUCCEEDED" "FAILED" "KILLED" "PREP" "DONEWITHERROR" "PAUSED" "PAUSEDWITHERROR" "PREMATER" "PREPPAUSED" "PREPSUSPENDED" "RUNNINGWITHERROR" "SUSPENDED" "SUSPENDEDWITHERROR")
+
+
+    STATUS=$(oozie job -oozie ${OOZIE} -info "${JOBID}" | grep -e "Status        :" | awk -F ' : ' '{print $2}')
+
+
+    echo "${STATUS}"
+    # Make sure that the workflow is in one of the known Oozie status's
+    while [[ "${ALL_OOZIE_STATUS[@]}" =~ "${STATUS}" ]]; do
+        sleep 5
+          echo "${STATUS}"
+        # Check if the job status is one of the known job status
+        if [[ "${ALL_OOZIE_STATUS[@]}" =~ " ${STATUS} " ]]; then
+              log_error "Workflow is ${STATUS} status which is not a valid status, requires manual intervention"
+              exit 3
+        fi
+        # I don't know what "Premater" means either, but it's documented here:
+        # http://www.slideshare.net/mislam77/oozie-summit-2011
+        NONE_COMPLETED_STATUS=("DONEWITHERROR" "PAUSED" "PAUSEDWITHERROR" "PREMATER" "PREPPAUSED" "PREPSUSPENDED" "RUNNINGWITHERROR" "SUSPENDED" "SUSPENDEDWITHERROR")
+        PREP_COUNTER=1
+
+
+        STATUS=$(oozie job -oozie ${OOZIE} -info "${JOBID}" | grep -e "Status        :" | awk -F ' : ' '{print $2}')
+
+
+        if [ "${STATUS}" == "PREP" ]; then
+            log_info "Job starting up. It has been in this step for ${PREP_COUNTER} run-throughs"
+            let PREP_COUNTER=PREP_COUNTER+1
+
+
+            if [ $PREP_COUNTER -gt 10 ]; then
+                log_error "Job has been in prep step for ${PREP_COUNTER} rounds. Manual intervention required."
+                exit 4
+            fi
+        fi
+
+
+        # Check if job is still running or not
+        if [ "${STATUS}" != "RUNNING" ]; then
+
+
+          # If job is not running, check if it's in a complete-type step
+          if [ "${STATUS}" == "SUCCEEDED" ]; then
+                  log_info "Workflow ${STATUS}"
+                  exit 0
+          fi
+
+
+          if [ "${STATUS}" == "FAILED" ]; then
+                  log_info "Workflow ${STATUS}"
+                  exit 1
+          fi
+
+
+          if [ "${STATUS}" == "KILLED" ]; then
+                  log_info "Workflow ${STATUS}"
+                  exit 2
+          fi
+
+
+          if [[ "${NONE_COMPLETED_STATUS[@]}" =~ " ${STATUS} " ]]; then
+              log_error "Workflow is ${STATUS}, requires manual intervention"
+              exit 3
+          fi
+        fi
+
+
+        # Check if valid kerberos ticket exist
+        klistExitCode=$(klist_status)
+        if [ $klistExitCode -gt 0 ]; then
+            echo '##################################'
+            echo 'Kinit again!'
+            kinit_oozie
+            klistExitCode=$(klist_status)
+            if [ $klistExitCode -gt 0 ]; then
+                echo 'klist failed even after kinit again! So exiting.'
+                exit 3
+            fi
+            echo '##################################'
+        fi
+
+
+    done
+}
+
+
+main() {
+    set_default_configs $2
+    echo "Running the workflow..."
+    kinit_oozie
+    oozie_setup $1
+    run_oozie_job
+    poll_every_5
+}
+
+
+main $1 $2
