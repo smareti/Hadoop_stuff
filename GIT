@@ -1,0 +1,15 @@
+git clone git@git.domain.com:projectname/jobname.git --branch develop
+ls -ltr
+mkdir newfolder
+touch newfolder/newfile
+cp -Rvf newfolder jobname/
+cd jobname
+ls -ltr
+git branch --list
+git add newfolder
+git status
+git commit -m "Added new"
+git branch --list
+git status
+#git push -u origin/develop
+git push git@git.domain.com:projectname/jobname.git HEAD:develop -f # timeout=10
